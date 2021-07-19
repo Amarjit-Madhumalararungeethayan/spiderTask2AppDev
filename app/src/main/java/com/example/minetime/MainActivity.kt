@@ -18,8 +18,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.button.setOnClickListener(){
             binding.battleground.refresh()
+            binding.battleground.chooseCoors()
             binding.button2.isEnabled = true
             binding.textView.text = ""
+
 
         }
         binding.button2.setOnClickListener(){

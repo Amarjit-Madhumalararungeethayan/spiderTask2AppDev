@@ -10,8 +10,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 
-var xCoordinates = mutableListOf<Int>()
-var yCoordinates = mutableListOf<Int>()
+var xCoordinates = mutableListOf<Int>(0)
+var yCoordinates = mutableListOf<Int>(0)
 
 var numberOfMines = 0
 var runCount = 0
@@ -107,16 +107,10 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
     }
     fun chooseCoors(){
         for (i in 0..runCount) {
-            if (!(runCount == 0)) {
                 var a = (0..7).random()
                 var b = (0..7).random()
-                if (xCoordinates.contains(a) && yCoordinates.contains(b))
-                    refresh()
-                else {
-                    xCoordinates.add(a)
-                    yCoordinates.add(b)
-                }
-            }
+            xCoordinates.add(a)
+            yCoordinates.add(b)
         }
     }
 
@@ -156,6 +150,5 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
         xCoordinates.clear()
         yCoordinates.clear()
         runCount = 6
-        postInvalidate()
     }
 }

@@ -1,6 +1,7 @@
 package com.example.minetime
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,8 +11,9 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 
-var xCoordinates = mutableListOf<Int>(0)
-var yCoordinates = mutableListOf<Int>(0)
+
+var xCoordinates = mutableListOf<Int>(10)
+var yCoordinates = mutableListOf<Int>(10)
 
 var numberOfMines = 0
 var runCount = 0
@@ -28,8 +30,6 @@ var x1Blue = 0f
 var x2Blue = 0f
 var y1Blue = 0f
 var y2Blue = 0f
-
-var doneOnce = false
 
 class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -76,11 +76,9 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
     var startX = 100f
     var startY = 100f
 
-
     override fun onDraw(canvas: Canvas?) {
 
         super.onDraw(canvas)
-
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), bg)
 
         for (i in 1..9) {
@@ -93,17 +91,15 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
         //grid starts at (160,160) and has a spacing of 100f
         // So the centre of a square would be of the format (210 + 100i),(210 + 100j) where i and j vary from 0 to 7
 
-//canvas?.drawCircle(210f + (100 * a).toFloat(), 210f + (100 * b).toFloat(), 25f, bomb)
+        //canvas?.drawCircle(210f + (100 * a).toFloat(), 210f + (100 * b).toFloat(), 25f, bomb)
         for(i in 0..7){
             for(j in 0..7){
                 canvas?.drawRect(170f + (100*i).toFloat(), 170f + (100*j).toFloat(),250f + (100*i).toFloat(),250f + (100*j).toFloat(),disguise)
             }
 
         }//l,t,r,b
-            canvas?.drawRect(x1Red, y1Red, x2Red, y2Red, red)
             canvas?.drawRect(x1Blue, y1Blue, x2Blue, y2Blue, blue)
-
-
+            canvas?.drawRect(x1Red, y1Red, x2Red, y2Red, red)
     }
     fun chooseCoors(){
         for (i in 0..runCount) {
@@ -127,18 +123,50 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
     }
 
     private fun analyseTile() {
+        Log.d("xCoor",xClick.toString())
+        Log.d("yCoor",yClick.toString())
 
-       if(xCoordinates.isEmpty()){
-           Log.d("abc","HELLO")
+       if(xCoordinates[0] == 10){
+           Log.d("abc","Game not started")
        }
-        else{
+        else if(xCoordinates[0] != 10){
            for (i in (0..runCount)){
                if((xClick in (160 + (100*xCoordinates[i]))..(260 + (100*xCoordinates[i]))) && (yClick in (160 + (100*yCoordinates[i]))..(260 + (100*yCoordinates[i])))){
-               //Log.d("def","TARGET CONFIRMED")
+               Log.d("def","TARGET CONFIRMED")
                    x1Red = (170 + (100*xCoordinates[i])).toFloat()
-                   x2Red = (250 + (100*xCoordinates[i])).toFloat()
+                   x2Red = x1Red + 80f
                    y1Red = (170 + (100*yCoordinates[i])).toFloat()
-                   y2Red = (250 + (100*yCoordinates[i])).toFloat()
+                   y2Red = y1Red + 80f
+                   invalidate()
+               }
+               else{
+                   Log.d("abc","Blank")
+                   if((xClick in (160..960))&&(yClick in (160..960))){
+                       when (xClick){
+                           in (160..259) -> x1Blue = 170f
+                           in (260..359) -> x1Blue = 270f
+                           in (360..459) -> x1Blue = 370f
+                           in (460..559) -> x1Blue = 470f
+                           in (560..659) -> x1Blue = 570f
+                           in (660..759) -> x1Blue = 670f
+                           in (760..859) -> x1Blue = 770f
+                           in (860..960) -> x1Blue = 870f
+                       }
+                       x2Blue = x1Blue + 80f
+                   }
+                   if((xClick in (160..960))&&(yClick in (160..960))){
+                       when (yClick){
+                           in (160..259) -> y1Blue = 170f
+                           in (260..359) -> y1Blue = 270f
+                           in (360..459) -> y1Blue = 370f
+                           in (460..559) -> y1Blue = 470f
+                           in (560..659) -> y1Blue = 570f
+                           in (660..759) -> y1Blue = 670f
+                           in (760..859) -> y1Blue = 770f
+                           in (860..960) -> y1Blue = 870f
+                       }
+                       y2Blue = y1Blue + 80f
+                   }
                    postInvalidate()
                }
            }

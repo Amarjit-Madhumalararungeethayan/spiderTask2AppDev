@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import com.example.minetime.databinding.ActivityMainBinding
 
 var Point = 0
-var runG = true
+var newCanvas = false
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener() {
             binding.battleground.refresh()
             binding.battleground.chooseCoors()
+            binding.battleground.check()
             binding.button2.isEnabled = true
             binding.textView.text = ""
             scoreRefresh()
@@ -47,27 +48,10 @@ class MainActivity : AppCompatActivity() {
         countDown = object : CountDownTimer(10000000, 10) {
             override fun onTick(millisecsToFinish: Long) {
                 binding.textView3.text = "Points -> ${Point}"
-
-                if(runG == false){
-                    binding.textView3.text = "GAME OVER"
-                    newGame()
-                }
             }
 
             override fun onFinish() {
                 scoreRefresh()
-            }
-        }
-        countDown.start()
-    }
-
-    private fun newGame() {
-        val countDown: CountDownTimer
-        countDown = object : CountDownTimer(5000, 1000) {
-            override fun onTick(millisecsToFinish: Long) {
-                }
-
-            override fun onFinish() {
             }
         }
         countDown.start()

@@ -2,10 +2,7 @@ package com.example.minetime
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -26,6 +23,8 @@ var x2Red = 0f
 var y1Red = 0f
 var y2Red = 0f
 
+var numMines : String = "1"
+
 var x1Blue = 0f
 var x2Blue = 0f
 var y1Blue = 0f
@@ -43,6 +42,8 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
 
     var red = Paint()
     var blue = Paint()
+
+    var number = Paint()
 
     init{
         bg.color = Color.BLACK
@@ -68,6 +69,11 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
         blue.color = ContextCompat.getColor(context,R.color.spiderBlue)
         blue.style = Paint.Style.FILL_AND_STROKE
         blue.isAntiAlias = true
+
+        number.color = Color.BLACK
+        number.style = Paint.Style.FILL_AND_STROKE
+        number.textSize = 60f
+        number.typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
 
     }
 
@@ -106,14 +112,16 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
             }
         }//l,t,r,b
             canvas?.drawRect(x1Blue, y1Blue, x2Blue, y2Blue, blue)
+
             canvas?.drawRect(x1Red, y1Red, x2Red, y2Red, red)
+
+            canvas?.drawText("${numMines}", x1Blue + 25f, y1Blue + 60f, number)
 
         extraCanvas.drawRect(x1Blue, y1Blue, x2Blue, y2Blue, blue)
         extraCanvas.drawRect(x1Red, y1Red, x2Red, y2Red, red)
+        extraCanvas.drawText("${numMines}", x1Blue + 25f, y1Blue + 60f, number)
 
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
-
-
     }
     fun chooseCoors(){
         for (i in 0..runCount) {
@@ -121,6 +129,17 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                 var b = (0..7).random()
             xCoordinates.add(a)
             yCoordinates.add(b)
+        }
+    }
+    fun check(){
+        for (i in 0..runCount){
+            for (j in 0..runCount){
+               if(i!=j){
+                   if(xCoordinates[i] == xCoordinates[j] && yCoordinates[i] == yCoordinates[j]) {
+                       escape()
+                   }
+               }
+            }
         }
     }
 
@@ -144,17 +163,16 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
            Log.d("abc","Game not started")
        }
         else if(xCoordinates[0] != 10){
-           for (i in (0..runCount)){
-               if((xClick in (160 + (100*xCoordinates[i]))..(260 + (100*xCoordinates[i]))) && (yClick in (160 + (100*yCoordinates[i]))..(260 + (100*yCoordinates[i])))){
-               Log.d("def","TARGET CONFIRMED")
-                   x1Red = (170 + (100*xCoordinates[i])).toFloat()
+           for (i in (0..runCount)) {
+               if ((xClick in (160 + (100 * xCoordinates[i]))..(260 + (100 * xCoordinates[i]))) && (yClick in (160 + (100 * yCoordinates[i]))..(260 + (100 * yCoordinates[i])))) {
+                   Log.d("def", "TARGET CONFIRMED")
+                   x1Red = (170 + (100 * xCoordinates[i])).toFloat()
                    x2Red = x1Red + 80f
-                   y1Red = (170 + (100*yCoordinates[i])).toFloat()
+                   y1Red = (170 + (100 * yCoordinates[i])).toFloat()
                    y2Red = y1Red + 80f
                    invalidate()
-                   runG = false
                }
-               else{
+           }
                    Log.d("abc","Blank")
                    if((xClick in (160..960))&&(yClick in (160..960))){
                        when (xClick){
@@ -185,11 +203,12 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                    postInvalidate()
                }
            }
-       }
-
+    fun escape(){
+        xCoordinates.clear()
+        yCoordinates.clear()
+        chooseCoors()
     }
-
-    fun refresh(){
+    fun refresh() {
         xCoordinates.clear()
         yCoordinates.clear()
         runCount = 6

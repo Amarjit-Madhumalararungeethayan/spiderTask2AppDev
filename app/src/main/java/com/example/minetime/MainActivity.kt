@@ -1,6 +1,8 @@
 package com.example.minetime
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,51 +12,33 @@ import androidx.core.view.isVisible
 import com.example.minetime.databinding.ActivityMainBinding
 
 var Point = 0
-var newCanvas = false
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+
+    fun options(){
+        AlertDialog.Builder(this)
+            .setMessage("Choose the difficulty :")
+            .setCancelable(false)
+            .setPositiveButton("Easy",
+                DialogInterface.OnClickListener { dialog, id -> runCount = 6 })
+            .setNegativeButton("Hard",
+                DialogInterface.OnClickListener { dialog, id -> runCount = 15 })
+            .show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.button2.isEnabled = false
 
-        binding.button.setOnClickListener() {
-            binding.battleground.refresh()
-            binding.battleground.chooseCoors()
-            binding.battleground.check()
-            binding.button2.isEnabled = true
-            binding.textView.text = ""
-            scoreRefresh()
-        }
-        binding.button2.setOnClickListener() {
-            binding.textView.text =
-                "[ (${xCoordinates[0]},${yCoordinates[0]}) , (${xCoordinates[1]},${yCoordinates[1]}) , (${xCoordinates[2]},${yCoordinates[2]}) , (${xCoordinates[3]},${yCoordinates[3]}) , (${xCoordinates[4]},${yCoordinates[4]}) , (${xCoordinates[5]},${yCoordinates[5]}) , (${xCoordinates[6]},${yCoordinates[6]}) ]"
-            binding.button2.isEnabled = false
+        binding.button3.setOnClickListener(){
+            val intent = Intent(this, Easy::class.java)
+            startActivity(intent)
         }
 
-        val actionBar: ActionBar? = supportActionBar
-        if (actionBar != null) {
-            actionBar.hide()
+        binding.button4.setOnClickListener(){
+            val intent = Intent(this, Hard::class.java)
+            startActivity(intent)
         }
-
-
-    }
-
-    private fun scoreRefresh() {
-        val countDown: CountDownTimer
-        countDown = object : CountDownTimer(10000000, 10) {
-            override fun onTick(millisecsToFinish: Long) {
-                binding.textView3.text = "Points -> ${Point}"
-            }
-
-            override fun onFinish() {
-                scoreRefresh()
-            }
-        }
-        countDown.start()
-    }
-}
-
+    }}

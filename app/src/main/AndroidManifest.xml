@@ -9,9 +9,13 @@
         android:roundIcon="@drawable/bomb"
         android:supportsRtl="true"
         android:theme="@style/Theme.MineTime">
-        <activity android:name=".GaMe"></activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait" >
+        <activity android:name=".Hard"></activity>
+        <activity android:name=".Easy" />
+        <activity android:name=".TheGame" />
+        <activity android:name=".GaMe" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

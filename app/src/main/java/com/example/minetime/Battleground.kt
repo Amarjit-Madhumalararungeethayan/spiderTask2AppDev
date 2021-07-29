@@ -226,7 +226,7 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                        }
                        y2Blue = y1Blue + 80f
                    }
-                   for (i in 0 until ((8*runCount))){
+                   for (i in 0 until ((8*(runCount + 1)))){
                        var n1 = when (xClick){
                            in (160..259) -> 0
                            in (260..359) -> 1

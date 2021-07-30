@@ -18,7 +18,7 @@ class Hard : AppCompatActivity() {
             .setMessage("Do you want to play again ?")
             .setCancelable(false)
             .setPositiveButton("Yes",
-                DialogInterface.OnClickListener { dialog, id-> this.finishAffinity() })
+                DialogInterface.OnClickListener { dialog, id-> System.exit(0) })
             .setNegativeButton("No",
         DialogInterface.OnClickListener { dialog, id-> System.exit(0) })
             .setIcon(R.drawable.bomb)

@@ -185,7 +185,9 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                 yClick = event.y.toInt()
             }
         }
-        analyseTile()
+        if((xClick in (160..960))&&(yClick in (160..960))){
+            analyseTile()
+        }
         return true
     }
 

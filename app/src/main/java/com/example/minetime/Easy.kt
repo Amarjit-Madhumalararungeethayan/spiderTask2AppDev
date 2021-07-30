@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBar
@@ -13,6 +14,8 @@ import com.example.minetime.databinding.ActivityEasyBinding
 
 class Easy : AppCompatActivity() {
     lateinit var binding: ActivityEasyBinding
+
+    lateinit var sharedPrefs1: SharedPreferences
 
     override fun onBackPressed() {
         AlertDialog.Builder(this)
@@ -83,6 +86,20 @@ class Easy : AppCompatActivity() {
 
                     binding.textView4.text = "You Lose !"
                     endGame = false
+
+                    sharedPrefs1 = getSharedPreferences("HighScore", MODE_PRIVATE)
+                    val highscore = sharedPrefs1.getInt("highscore", 0)
+
+                    if (highscore >= Point) {
+                        binding.textView5.text = "HighScore -> ${highscore}"
+                    }
+                    else {
+                        binding.textView5.text = "HighScore -> ${Point}"
+                        val editor = getSharedPreferences("HighScore", MODE_PRIVATE).edit()
+                        editor.putInt("highscore", Point)
+                        editor.apply()
+                    }
+
 
                 }
             }

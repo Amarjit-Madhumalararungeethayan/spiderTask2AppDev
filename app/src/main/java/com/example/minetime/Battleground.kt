@@ -3,18 +3,22 @@ package com.example.minetime
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-
-
 var xCoordinates = mutableListOf<Int>(10)
 var yCoordinates = mutableListOf<Int>(10)
 
 var abc = mutableListOf<Int>(10)
 var def = mutableListOf<Int>(10)
+
+var pX = mutableListOf<Int>(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 
 var runCount = 0
 
@@ -32,6 +36,8 @@ var x1Blue = 0f
 var x2Blue = 0f
 var y1Blue = 0f
 var y2Blue = 0f
+
+var endGame = false
 
 private lateinit var extraCanvas: Canvas
 private lateinit var extraBitmap: Bitmap
@@ -125,11 +131,14 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
         extraCanvas.drawRect(x1Red, y1Red, x2Red, y2Red, red)
 
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
-    }
+
+        }
+
     fun chooseCoors(){
         for (i in 0..runCount) {
                 var a = (0..7).random()
                 var b = (0..7).random()
+            pX[a + (b*8)] = 5
             xCoordinates.add(a)
             yCoordinates.add(b)
         }
@@ -227,7 +236,7 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                        y2Blue = y1Blue + 80f
                    }
                    for (i in 0 until ((8*(runCount + 1)))){
-                       var n1 = when (xClick){
+                       var n1 : Int = when (xClick){
                            in (160..259) -> 0
                            in (260..359) -> 1
                            in (360..459) -> 2
@@ -236,9 +245,9 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                            in (660..759) -> 5
                            in (760..859) -> 6
                            in (860..960) -> 7
-                           else -> print("Error")
+                           else -> 10
                        }
-                       var n2 = when (yClick){
+                       var n2 : Int = when (yClick){
                            in (160..259) -> 0
                            in (260..359) -> 1
                            in (360..459) -> 2
@@ -247,10 +256,21 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
                            in (660..759) -> 5
                            in (760..859) -> 6
                            in (860..960) -> 7
-                           else -> print("Error")
+                           else -> 1000
                        }
                        if( n1 == abc[i] && n2 == def[i] ){
                            numMines++
+                       }
+                       if (pX[n1 + (n2*8)] == 0 ){
+                           Log.d("before", pX[n1].toString())
+                           Point++
+                           pX[n1 + (n2*8)] = 1
+                               Log.d("after", pX[n1].toString())
+                       }
+                       if (pX[n1 + (n2*8)] == 5 ){
+                           endGame = true
+                           pX[n1 + (n2*8)] = 10
+
                        }
                    }
                    postInvalidate()
@@ -265,10 +285,13 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
         xCoordinates.clear()
         yCoordinates.clear()
         runCount = 6
+        endGame = false
     }
     fun refresh2() {
         xCoordinates.clear()
         yCoordinates.clear()
         runCount = 15
+        endGame = false
     }
+
 }

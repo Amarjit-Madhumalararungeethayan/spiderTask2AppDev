@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.minetime">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/bomb"
@@ -9,10 +12,13 @@
         android:roundIcon="@drawable/bomb"
         android:supportsRtl="true"
         android:theme="@style/Theme.MineTime">
-        <activity android:name=".Hard"></activity>
-        <activity android:name=".Easy" />
-        <activity android:name=".TheGame" />
-        <activity android:name=".GaMe" />
+        <activity android:name=".Result"></activity>
+        <activity
+            android:name=".Hard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Easy"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

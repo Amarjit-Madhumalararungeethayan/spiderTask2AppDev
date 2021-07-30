@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBar
 import androidx.core.view.isVisible
 import com.example.minetime.databinding.ActivityEasyBinding
 
-
+var Speak = true
 class Easy : AppCompatActivity() {
     lateinit var binding: ActivityEasyBinding
 
@@ -70,6 +71,10 @@ class Easy : AppCompatActivity() {
                 binding.textView3.text = "Points -> ${Point}"
 
                 if(Point == 57){
+
+                    val win = MediaPlayer.create(baseContext, R.raw.win)
+                    win.start()
+
                     binding.battleground.isVisible = false
                     binding.button2.isVisible = false
                     binding.button.isVisible = false
@@ -78,6 +83,9 @@ class Easy : AppCompatActivity() {
                     binding.textView4.text = "You Win !"
                 }
                 if(endGame){
+                    val exp = MediaPlayer.create(baseContext, R.raw.bombexp)
+                    exp.start()
+
                     vibrateNow()
                     binding.battleground.isVisible = false
                     binding.button2.isVisible = false
@@ -99,8 +107,11 @@ class Easy : AppCompatActivity() {
                         editor.putInt("highscore", Point)
                         editor.apply()
                     }
-
-
+                }
+                if(Point == 47 && Speak){
+                    val hb = MediaPlayer.create(baseContext, R.raw.hb)
+                    hb.start()
+                    Speak = false
                 }
             }
 

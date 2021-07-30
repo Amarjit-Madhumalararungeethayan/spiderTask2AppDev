@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBar
@@ -75,6 +76,9 @@ class Hard : AppCompatActivity() {
                     binding.textView4.text = "You Win !"
                 }
                 if(endGame){
+                    val win = MediaPlayer.create(baseContext, R.raw.win)
+                    win.start()
+
                     vibrateNow()
                     binding.battleground.isVisible = false
                     binding.button2.isVisible = false
@@ -96,6 +100,11 @@ class Hard : AppCompatActivity() {
                         editor.putInt("highscorex", Point)
                         editor.apply()
                     }
+                }
+                if(Point == 38 && Speak){
+                    val hb = MediaPlayer.create(baseContext, R.raw.hb)
+                    hb.start()
+                    Speak = false
                 }
             }
 

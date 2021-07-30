@@ -13,6 +13,8 @@ import androidx.core.view.isVisible
 import com.example.minetime.databinding.ActivityEasyBinding
 
 var Speak = true
+var winE = true
+
 class Easy : AppCompatActivity() {
     lateinit var binding: ActivityEasyBinding
 
@@ -38,24 +40,15 @@ class Easy : AppCompatActivity() {
 
         binding.battleground.invalidate()
 
-        binding.button2.isEnabled = false
 
-        binding.textView4.text = ""
+        binding.imageView.isVisible = false
 
         binding.button.setOnClickListener() {
             binding.battleground.refresh1()
             binding.battleground.chooseCoors()
             binding.battleground.check()
-            binding.button2.isEnabled = true
-            binding.textView.text = ""
             scoreRefresh()
         }
-        binding.button2.setOnClickListener() {
-            binding.textView.text =
-                "[ (${xCoordinates[0]},${yCoordinates[0]}) , (${xCoordinates[1]},${yCoordinates[1]}) , (${xCoordinates[2]},${yCoordinates[2]}) , (${xCoordinates[3]},${yCoordinates[3]}) , (${xCoordinates[4]},${yCoordinates[4]}) , (${xCoordinates[5]},${yCoordinates[5]}) , (${xCoordinates[6]},${yCoordinates[6]}) ]"
-            binding.button2.isEnabled = false
-        }
-
         val actionBar: ActionBar? = supportActionBar
         if (actionBar != null) {
             actionBar.hide()
@@ -70,27 +63,28 @@ class Easy : AppCompatActivity() {
             override fun onTick(millisecsToFinish: Long) {
                 binding.textView3.text = "Points -> ${Point}"
 
-                if(Point == 57){
+                if(Point == 52 && winE){
 
                     val win = MediaPlayer.create(baseContext, R.raw.win)
                     win.start()
 
+                    binding.imageView.isVisible = true
                     binding.battleground.isVisible = false
-                    binding.button2.isVisible = false
                     binding.button.isVisible = false
-                    binding.textView.isVisible = false
 
                     binding.textView4.text = "You Win !"
+
+                    winE = false
                 }
                 if(endGame){
                     val exp = MediaPlayer.create(baseContext, R.raw.bombexp)
                     exp.start()
 
+                    binding.imageView.setImageResource(R.drawable.one)
+                    binding.imageView.isVisible = true
                     vibrateNow()
                     binding.battleground.isVisible = false
-                    binding.button2.isVisible = false
                     binding.button.isVisible = false
-                    binding.textView.isVisible = false
 
                     binding.textView4.text = "You Lose !"
                     endGame = false
@@ -108,7 +102,7 @@ class Easy : AppCompatActivity() {
                         editor.apply()
                     }
                 }
-                if(Point == 47 && Speak){
+                if(Point == 42 && Speak){
                     val hb = MediaPlayer.create(baseContext, R.raw.hb)
                     hb.start()
                     Speak = false

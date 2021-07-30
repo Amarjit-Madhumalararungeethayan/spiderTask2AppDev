@@ -290,7 +290,7 @@ class Battleground(context: Context, attrs: AttributeSet?) : View(context, attrs
     fun refresh2() {
         xCoordinates.clear()
         yCoordinates.clear()
-        runCount = 15
+        runCount = 11
         endGame = false
     }
 

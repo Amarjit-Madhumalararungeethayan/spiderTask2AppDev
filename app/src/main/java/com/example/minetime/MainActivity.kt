@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val actionBar: ActionBar? = supportActionBar
+        if (actionBar != null) {
+            actionBar.hide()
+        }
+
         binding.button3.setOnClickListener(){
             val intent = Intent(this, Easy::class.java)
             startActivity(intent)
